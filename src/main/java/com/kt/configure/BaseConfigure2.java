@@ -1,36 +1,29 @@
-package com.kt;
+package com.kt.configure;
 
-import org.springframework.boot.gradle.plugin.SpringBootPlugin;
-
-import io.spring.gradle.dependencymanagement.DependencyManagementPlugin;
-import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.gradle.api.Project;
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin;
 import org.gradle.plugins.signing.SigningPlugin;
 
-import com.kt.extension.DevOpsPluginExtension;
-import com.kt.trigger.JenkinsTrigger;
+import com.kt.MavenPublishPom;
+import com.kt.MavenPublishRepository;
+import com.kt.RepositoryAction;
+import com.kt.extension.BaseExtension;
 
 @RequiredArgsConstructor
-public class DevOpsConfigure implements Configure {
+public class BaseConfigure2 implements Configure {
 
-  private final Project project;
+  @NonNull
+  private Project project;
 
-  private final MavenPublishPom pom;
+  private MavenPublishPom pom;
 
-  private final MavenPublishRepository repository;
+  private MavenPublishRepository repository;
 
   @Override
   public void configureSpringBoot() {
-    project.getPluginManager()
-        .apply(SpringBootPlugin.class);
 
-    project.getPluginManager()
-        .apply(DependencyManagementPlugin.class);
-
-    project.getExtensions()
-        .configure(DependencyManagementExtension.class, e -> e.imports(h -> h.mavenBom(bom)));
   }
 
   @Override
@@ -38,9 +31,11 @@ public class DevOpsConfigure implements Configure {
     project.getPluginManager().apply(SigningPlugin.class);
     project.getPluginManager().apply(MavenPublishPlugin.class);
 
-    var ext = project.getExtensions().getByType(DevOpsPluginExtension.class);
+    var ext = project.getExtensions().getByType(BaseExtension.class);
 
     var log = project.getLogger();
+
+
 
 //    project.getTasks().create("release", task -> JenkinsTrigger.of(ext).run());
 
@@ -54,6 +49,11 @@ public class DevOpsConfigure implements Configure {
     project.getRepositories().mavenLocal();
     project.getRepositories().maven(new RepositoryAction());
     project.getRepositories().mavenCentral();
+  }
+
+  @Override
+  public void configureUnitTest() {
+
   }
 
   @Override

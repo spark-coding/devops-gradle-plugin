@@ -3,7 +3,9 @@ package com.kt.extension;
 import lombok.Data;
 
 @Data
-public class JenkinsExtension {
+public class Jenkins {
+
+  private boolean enabled;
 
   private String url;
 

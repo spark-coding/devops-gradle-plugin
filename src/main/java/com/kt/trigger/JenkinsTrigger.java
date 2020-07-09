@@ -1,16 +1,15 @@
 package com.kt.trigger;
 
 import com.cdancy.jenkins.rest.JenkinsClient;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 
-import com.kt.extension.DevOpsPluginExtension;
+import com.kt.extension.BaseExtension;
 
 
 @RequiredArgsConstructor(staticName = "of")
 public class JenkinsTrigger implements Trigger {
 
-  private final DevOpsPluginExtension extension;
+  private final BaseExtension extension;
 
   @Override
   public void run() {
