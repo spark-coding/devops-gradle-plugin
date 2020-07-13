@@ -3,9 +3,8 @@ package com.kt.configure;
 import lombok.Getter;
 import org.gradle.api.Project;
 
-import com.kt.extension.BaseExtension;
+import com.kt.extension.DevOpsExtension;
 import com.kt.task.JenkinsTask;
-import com.kt.trigger.JenkinsTrigger;
 
 @Getter
 public class JenkinsConfigure implements Configurable, NameAware {
@@ -14,7 +13,7 @@ public class JenkinsConfigure implements Configurable, NameAware {
 
   @Override
   public void apply(Project project) {
-    var ext = project.getExtensions().getByType(BaseExtension.class);
+    var ext = project.getExtensions().getByType(DevOpsExtension.class);
 
     var task = project.getTasks()
         .create("deploy", JenkinsTask.class);

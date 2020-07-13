@@ -1,38 +1,54 @@
 package com.kt;
 
-import javax.swing.Spring;
-
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
+import org.gradle.api.plugins.JavaPlugin;
 
 import com.kt.configure.BaseConfigure;
-import com.kt.configure.JenkinsConfigure;
-import com.kt.configure.PublishConfigure;
 import com.kt.configure.SpringConfigure;
 import com.kt.configure.repository.RepositoryConfigure;
-import com.kt.extension.BaseExtension;
-import com.kt.task.JenkinsTask;
+import com.kt.extension.DevOpsExtension;
 
 public class DevOpsPlugin implements Plugin<Project> {
 
   @Override
   public void apply(Project project) {
-    project.getExtensions().create("devops", BaseExtension.class);
 
-    printLogo(project);
-
-    BaseConfigure.of(project)
-        .add(new SpringConfigure())
-        .add(new PublishConfigure())
-        .add(new JenkinsConfigure())
-        .add(new RepositoryConfigure())
-        .apply();
-  }
-
-
-  public void printLogo(Project project) {
     var logger = project.getLogger();
-    logger.lifecycle(" * DevOps Plugin");
+
+    try {
+      logger.lifecycle(" * DevOps Plugin");
+
+      project.getPluginManager()
+          .apply(JavaPlugin.class);
+
+      var ext = project.getExtensions().create("devops", DevOpsExtension.class, project.getObjects());
+//      var ext = project.getExtensions().getByType(DevOpsExtension.class);
+
+      project.afterEvaluate(a -> {
+        var config = BaseConfigure.of(project)
+            .add(new RepositoryConfigure());
+
+        if (ext.getSpringBoot().isEnabled()) {
+          config.add(new SpringConfigure());
+        }
+
+//      if (ext.getPublish().isEnabled()) {
+//        config.add(new PublishConfigure());
+//      }
+//
+//      if(ext.getJenkins().isEnabled()) {
+//        config.add(new JenkinsConfigure());
+//      }
+
+        config.apply();
+      });
+
+    }catch (Exception e) {
+
+      e.printStackTrace();
+    }
+
   }
 }
 

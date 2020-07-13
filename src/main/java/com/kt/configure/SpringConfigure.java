@@ -8,9 +8,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.gradle.api.Project;
 import org.gradle.api.plugins.GroovyPlugin;
-import org.gradle.api.plugins.JavaPlugin;
 
-import com.kt.extension.BaseExtension;
+import com.kt.extension.DevOpsExtension;
 
 import static java.lang.String.format;
 
@@ -20,14 +19,12 @@ public class SpringConfigure implements Configurable, NameAware {
 
   private final String name = "SpringBoot";
 
-  private final String springBom = "org.springframework.boot:spring-boot-starter-parent:{}";
+  private final String springBom = "org.springframework.boot:spring-boot-starter-parent:2.3.1.RELEASE";
 
   @Override
   public void apply(Project project) {
-    var ext = project.getExtensions().getByType(BaseExtension.class);
+    var ext = project.getExtensions().getByType(DevOpsExtension.class);
 
-    project.getPluginManager()
-        .apply(JavaPlugin.class);
 
     project.getPluginManager()
         .apply(GroovyPlugin.class);
@@ -40,7 +37,7 @@ public class SpringConfigure implements Configurable, NameAware {
 
     project.getExtensions().configure(DependencyManagementExtension.class, dme ->
       dme.imports(importsHandler ->
-          importsHandler.mavenBom(format(springBom, ext.getSpringBoot().getVersion()))
+          importsHandler.mavenBom(springBom)
       )
     );
   }

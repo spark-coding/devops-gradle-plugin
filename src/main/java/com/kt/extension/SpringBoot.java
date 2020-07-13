@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class SpringBoot {
 
-  private String version;
+  private boolean enabled;
 
 }

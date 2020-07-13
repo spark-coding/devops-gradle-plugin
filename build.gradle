@@ -36,8 +36,8 @@ gradlePlugin {
 }
 
 pluginBundle {
-  website = 'https://kt.com'
-  vcsUrl = 'https://github.com/spark/devops-gradle-plugin'
+  website = 'https://github.com/spark-coding/devops-gradle-plugin'
+  vcsUrl = 'https://github.com/spark-coding/devops-gradle-plugin'
   description = 'DevOps Gradle Plugin'
   tags = ['devops']
 
