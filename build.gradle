@@ -1,4 +1,5 @@
 plugins {
+  id "com.gradle.plugin-publish" version "0.12.0"
   id 'java-gradle-plugin'
   id 'maven-publish'
   id 'groovy'
@@ -34,33 +35,15 @@ gradlePlugin {
   }
 }
 
-publishing {
-  publications {
-    mavenJava(MavenPublication) {
-      versionMapping {
-        usage('java-api') {
-          fromResolutionOf('runtimeClasspath')
-        }
-        usage('java-runtime') {
-          fromResolutionResult()
-        }
-      }
+pluginBundle {
+  website = 'https://kt.com'
+  vcsUrl = 'https://github.com/spark/devops-gradle-plugin'
+  description = 'DevOps Gradle Plugin'
+  tags = ['devops']
 
-      groupId 'com.kt'
-      artifactId 'devops'
-      version '1.0.0.RELEASE'
-
-      from components.java
-    }
-  }
-
-  repositories {
-    maven {
-      credentials {
-        username "geniecube"
-        password "new1234!"
-      }
-      url "http://repo.chelsea.kt.co.kr/repository/maven-sw-release/"
+  plugins {
+    devops {
+      displayName = 'DevOps Gradle Plugin'
     }
   }
 }

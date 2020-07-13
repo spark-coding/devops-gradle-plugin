@@ -21,6 +21,4 @@ public class JenkinsTrigger implements Trigger {
     client.api().jobsApi().build(null, extension.getJenkins().getJobName());
   }
 
-
-
 }
